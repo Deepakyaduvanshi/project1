@@ -1,0 +1,43 @@
+ Now here we need to modify few things. At first we need to edit the /boot/config.txt file.
+Now you need to open this file in any text editor. Here I am using nano:
+sudo nano /boot/config.txt
+ At the end of the file add the following lines:
+
+dtparam=spi=on
+dtoverlay=pi3-disable-bt
+core_freq=250
+enable_uart=1
+force_turbo=1
+
+Now save this by typing ctrl +x, then type y and press enter.
+? Raspbian uses the UART as a serial console and so we need to turn off that functionality.
+To do so we need to change the /boot/cmdline.txt file. For safety before editing the file
+make a backup of that using the following command:
+
+sudo cp /boot/cmdline.txt /boot/cmdline_backup.txt
+
+Now to edit that file open that in text editor:
+sudo nano /boot/cmdline.txt
+
+? Replace the content with the following line (delete everything in it and write down the
+following content):
+
+dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4
+elevator=deadline fsck.repair=yes rootwait quiet splash plymouth.ignore-serial-consoles
+Now save this by typing ctrl +x, then type y and press enter.
+? Now reboot pi using: sudo reboot
+
+After the reboot now, we will check how our module is working.
+Before checking this out makes sure that the blue LED in the Neo 6M is blinking. Basically the
+blinking of blue LED means that it’s receiving the data perfectly. Generally it takes few minutes
+to blink the LED after giving power to the module. So wait until that. And if it’s not blinking
+even after 5 minutes then go to a window side area or any place under the open sky. In the image
+below you can see how the blue LED should blink.
+
+? When the blue led is blinking, run the following command:
+ sudo cp /dev/ttyAMA0 /home/your_linux_username/deep/data.txt
+
+Now you will see a lots of data like shown in the below image. That basically means that it’s
+working to stop this type Ctrl + c.
+The output result may be save as super user file so we have to give grant permission to the file
+OR we can go to file manager to use command sudo nautilus ,then open the text file.
